@@ -4,8 +4,6 @@
 
 *Het volledige klassendiagram wordt opgebouwd tot en met opdracht 6 — EquipmentSet.*
 
-**Software Development · MBO niveau 4 · C# / .NET 10**
-
 ## Situatie
 
 Je ontwikkelt een herbruikbare C#-bibliotheek voor een RPG. Je begint met een enkel wapen, bouwt een inventory en maakt daarna verschillende soorten equipment, magische abilities en een equipmentset. Je test alles vanuit een Console App. Je bouwt **geen volledige game**.
