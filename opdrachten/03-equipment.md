@@ -10,17 +10,61 @@ Wapens en andere uitrusting hebben eigenschappen gemeen. Je maakt een abstracte 
 
 Abstracte klasse, `protected` fields, `static readonly`, method-overloading, abstracte method, `DateTime`, berekende property en refactoring toepassen.
 
-## Korte theorie
+## Theorie
 
-Een abstracte klasse kan niet rechtstreeks met `new` worden aangemaakt. `protected` fields zijn bereikbaar voor afgeleide klassen. Een `static readonly` field heeft één gedeelde waarde die na initialisatie niet opnieuw kan worden toegewezen. **Overloading** betekent: dezelfde methodnaam met andere parameters.
+### 1. Waarom een abstracte basisklasse?
+
+Als verschillende klassen dezelfde gegevens en methods nodig hebben, kun je die in een **basisklasse** zetten. Een afgeleide klasse erft de toegankelijke onderdelen daarvan. Een **abstracte klasse** dient als gemeenschappelijke basis en kan niet rechtstreeks met `new` worden gemaakt.
 
 ```csharp
-public abstract class Item
+public abstract class QuestReward
 {
     protected string name = "";
     public abstract string Describe();
 }
 ```
+
+Een abstracte method zoals `Describe()` heeft hier geen implementatie. Een concrete afgeleide klasse moet deze method implementeren.
+
+### 2. `private`, `protected` en `public`
+
+- `private`: rechtstreeks toegankelijk binnen de klasse waarin het field staat.
+- `protected`: rechtstreeks toegankelijk binnen de klasse en haar afgeleide klassen.
+- `public`: toegankelijk voor andere code die het object gebruikt.
+
+Gebruik `protected` alleen wanneer afgeleide klassen echt toegang nodig hebben. Voor andere code zijn publieke properties vaak duidelijker.
+
+### 3. `static readonly`
+
+`static` betekent dat een field bij de **klasse** hoort in plaats van bij ieder afzonderlijk object. `readonly` betekent dat je het field alleen bij declaratie of in een geschikte constructor kunt toewijzen. Samen kun je hiermee een gedeelde, niet opnieuw toe te wijzen waarde vastleggen.
+
+```csharp
+public class ShopRules
+{
+    public static readonly double TaxPercentage = 10.0;
+}
+```
+
+### 4. Method-overloading
+
+Bij **overloading** hebben methods dezelfde naam, maar verschillende parameters:
+
+```csharp
+public string ShowQuest() { return "Unknown quest"; }
+public string ShowQuest(string name) { return "Quest: " + name; }
+```
+
+C# kiest de passende method op basis van de meegegeven argumenten. Overloading is iets anders dan **overriding**: daarbij vervangt een afgeleide klasse de implementatie van een geërfde method.
+
+### 5. `DateTime`, `decimal` en berekende properties
+
+`DateTime` beschrijft een datum en tijd; `DateTime.Now` geeft de huidige lokale datum en tijd. `default(DateTime)` is de standaardwaarde van een nog niet ingestelde `DateTime`. Met het verschil tussen twee datums kun je een `TimeSpan` berekenen.
+
+Voor geldbedragen gebruik je doorgaans `decimal` in plaats van `double`, bijvoorbeeld `100m`. De `m` geeft aan dat de waarde een `decimal` is. Een read-only property kan een berekening maken uit een andere property en een percentage.
+
+### 6. Refactoring zonder gedrag te verliezen
+
+**Refactoring** betekent dat je de structuur van bestaande code verbetert zonder het bedoelde gedrag te veranderen. Wanneer je gedeelde fields naar een basisklasse verplaatst, moeten de bestaande constructors, methods, properties en tests blijven werken. Test daarom ook eerdere opdrachten opnieuw.
 
 ## Opdrachten
 

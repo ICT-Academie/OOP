@@ -10,17 +10,66 @@ Je bouwt een `EquipmentSet` die een bestaande inventory met wapens kan koppelen.
 
 Twee interfaces implementeren, een object als field gebruiken, abstracte method overschrijven, null controleren, gekoppelde collecties controleren en onderdelen samen testen.
 
-## Korte theorie
+## Theorie
 
-Bij **compositie** heeft een object een verwijzing naar een ander object. Een `EquipmentSet` **heeft een** `Inventory`; een `EquipmentSet` **is geen** `Inventory`. Een niet-gekoppelde inventory is `null`.
+### 1. Meerdere interfaces implementeren
+
+Een klasse kan maar één basisklasse hebben, maar wel meerdere interfaces implementeren. Zet de basisklasse eerst en scheid de interfaces met komma's:
 
 ```csharp
-public class Quest
+public interface IStartable { void Start(); }
+public interface IStoppable { void Stop(); }
+
+public class Timer : IStartable, IStoppable
 {
-    private string? reward;
-    public bool HasReward() { return reward != null; }
+    public void Start() { }
+    public void Stop() { }
 }
 ```
+
+De klasse moet de vereiste members van **beide** interfaces aanbieden.
+
+### 2. Compositie: `heeft een`
+
+Bij **compositie** bewaart een object een verwijzing naar een ander object. Een `QuestBoard` **heeft een** verzameling quests, maar **is geen** quest. Dit verschilt van overerving, waarbij een object **een soort van** de basisklasse is.
+
+```csharp
+public class QuestBoard
+{
+    private List<string> quests = new();
+
+    public int QuestCount
+    {
+        get { return quests.Count; }
+    }
+}
+```
+
+### 3. Nullable verwijzingen en null-controles
+
+Soms is er nog geen object gekoppeld. Dan kan een referentie `null` zijn. Met `?` geef je aan dat dit is toegestaan:
+
+```csharp
+public class QuestTracker
+{
+    private QuestBoard? board;
+
+    public bool HasBoard()
+    {
+        return board != null;
+    }
+}
+```
+
+Controleer op `null` **voordat** je een property of method van het gekoppelde object gebruikt. Anders kan je programma een `NullReferenceException` krijgen. Met `board != null && board.QuestCount > 0` wordt het tweede deel alleen uitgevoerd als `board` niet `null` is.
+
+### 4. Berekende properties met voorwaarden
+
+Een read-only property kan meerdere voorwaarden controleren en daarna een resultaat berekenen. Denk bij een bonus aan de volgorde: is het systeem actief, is er een object gekoppeld en zijn er voldoende items? Pas daarna bereken je de bonus. Test ook situaties waarin één van die voorwaarden niet klopt.
+
+### 5. De volledige keten testen
+
+Test niet alleen elke klasse apart, maar ook de samenwerking. Maak objecten aan, plaats ze in een collectie, koppel die collectie aan een ander object en controleer of wijzigingen zichtbaar worden. Controleer ook wat er gebeurt bij een lege collectie en na het loskoppelen.
 
 ## Opdrachten
 

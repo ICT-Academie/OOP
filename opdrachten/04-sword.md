@@ -10,13 +10,67 @@ Je maakt een gespecialiseerd wapen: een `Sword`. Een zwaard erft de algemene eig
 
 Overerving, constructor met `base`, enum, property en overriding toepassen.
 
-## Korte theorie
+## Theorie
 
-Een afgeleide klasse kan een method van een basisklasse overschrijven als deze `virtual` of `abstract` is.
+### 1. Overerving: `is een`
+
+Bij **overerving** breidt een klasse een andere klasse uit. Een `Sword` **is een** `Weapon`. Daardoor hoeft `Sword` algemene gegevens zoals naam en ID niet opnieuw te definiëren.
 
 ```csharp
-public enum PotionSize { Unknown, Small, Medium, Large }
+public class Character
+{
+    public string Name { get; set; } = "";
+}
+
+public class Mage : Character
+{
+    public int Mana { get; set; }
+}
 ```
+
+Een `Mage` heeft zowel de geërfde property `Name` als de eigen property `Mana`.
+
+### 2. Een constructor van de basisklasse aanroepen
+
+Met `base(...)` geef je argumenten door aan een constructor van de basisklasse:
+
+```csharp
+public class Character
+{
+    public Character(int id) { Id = id; }
+    public int Id { get; }
+}
+
+public class Mage : Character
+{
+    public Mage(int id) : base(id) { }
+}
+```
+
+Hier initialiseert `Character` de geërfde ID. `Mage` hoeft dat niet nog eens te doen.
+
+### 3. `virtual`, `abstract` en `override`
+
+Een method met `virtual` heeft een basisimplementatie die een afgeleide klasse **mag** vervangen. Een abstracte method heeft geen basisimplementatie en moet door een concrete afgeleide klasse worden ingevuld. Met `override` geef je de eigen implementatie:
+
+```csharp
+public abstract class Character
+{
+    public abstract string GetRole();
+}
+
+public class Mage : Character
+{
+    public override string GetRole()
+    {
+        return "Spellcaster";
+    }
+}
+```
+
+### 4. Een `enum` met `switch`
+
+Een enum bevat vaste keuzewaarden. Met een `switch` kun je voor elke waarde een andere uitkomst kiezen. Vergeet niet wat er moet gebeuren bij een onbekende of standaardwaarde.
 
 ## Opdrachten
 

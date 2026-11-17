@@ -16,17 +16,51 @@ In een RPG heeft ieder item eigenschappen. Een Iron Sword en een Fire Sword zijn
 
 .NET 10 en een Console App.
 
-## Korte theorie
+## Theorie
 
-Een **klasse** is een beschrijving; een **object** is één exemplaar. Een **property** is een kenmerk. `string` bewaart tekst, `int` gehele getallen, `double` kommagetallen en `bool` `true` of `false`.
+### Van een voorwerp naar een klasse
+
+Een **klasse** beschrijft welke gegevens een soort voorwerp heeft. Een **object** is één concreet exemplaar van die klasse. Twee objecten kunnen dezelfde eigenschappen hebben, maar verschillende waarden.
+
+Bijvoorbeeld: de klasse `Potion` beschrijft drankjes. Een kleine healing potion en een grote healing potion zijn twee verschillende objecten van die klasse.
 
 ```csharp
 public class Potion
 {
     public string Name { get; set; } = "";
     public int Healing { get; set; }
+    public double Weight { get; set; }
+    public bool IsRare { get; set; }
 }
 ```
+
+Een **property** is een eigenschap van een object. In `public string Name { get; set; }` is `string` het datatype, `Name` de naam van de property, `get` het lezen en `set` het wijzigen. Dit heet een **auto-property**: C# bewaart de waarde automatisch.
+
+### Datatypes en objecten maken
+
+| Type | Betekenis | Voorbeeld |
+|---|---|---|
+| `string` | Tekst | `"Healing Potion"` |
+| `int` | Geheel getal | `25` |
+| `double` | Kommagetal | `0.75` |
+| `bool` | Waar of onwaar | `true` |
+
+Met `new` maak je een object. Met de punt (`.`) lees of wijzig je properties:
+
+```csharp
+Potion smallPotion = new Potion();
+smallPotion.Name = "Small Potion";
+smallPotion.Healing = 25;
+
+Potion largePotion = new Potion();
+largePotion.Name = "Large Potion";
+largePotion.Healing = 80;
+
+Console.WriteLine(smallPotion.Name);
+Console.WriteLine(largePotion.Healing);
+```
+
+De twee variabelen verwijzen naar verschillende objecten. Een wijziging aan `smallPotion` verandert `largePotion` niet.
 
 ## Opdrachten
 

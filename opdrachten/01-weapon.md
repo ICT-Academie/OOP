@@ -19,18 +19,93 @@ Je bouwt een herbruikbare `Weapon`-klasse. Ieder wapen heeft een naam, een besch
 
 .NET 10 SDK, C#-IDE en een nieuwe solution.
 
-## Korte theorie
+## Theorie
 
-`private` fields zijn alleen binnen de klasse rechtstreeks toegankelijk. Properties bepalen hoe andere code gegevens leest en wijzigt. Constructors worden uitgevoerd bij `new`. `TimeSpan` bewaart een tijdsduur; `TotalSeconds` levert een `double` op.
+### 1. Klassen, objecten en private fields
+
+Een **klasse** is een beschrijving van gegevens en gedrag; een **object** is een concreet exemplaar dat je met `new` aanmaakt. Met een `private` field sla je gegevens op die niet rechtstreeks vanuit andere klassen gewijzigd kunnen worden. Een publieke **property** bepaalt hoe andere code die gegevens mag lezen en aanpassen.
 
 ```csharp
 public class Potion
 {
     private string name = "";
-    public Potion(string name) { this.name = name; }
-    public string Name { get { return name; } set { name = value; } }
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
 }
 ```
+
+Bij `potion.Name = "Healing"` wordt de `set` uitgevoerd. Bij `Console.WriteLine(potion.Name)` wordt de `get` uitgevoerd. Binnen een setter bevat `value` de nieuwe waarde.
+
+### 2. Constructors en constructor-overloading
+
+Een **constructor** wordt automatisch uitgevoerd wanneer je een object met `new` maakt. Je gebruikt een constructor om een object meteen beginwaarden te geven. De constructor heeft **dezelfde naam als de klasse** en **geen returntype** (dus ook niet `void`).
+
+```csharp
+public class Potion
+{
+    private string name = "";
+    private int healing;
+
+    public Potion(string name)
+    {
+        this.name = name;
+    }
+
+    public Potion(string name, int healing)
+    {
+        this.name = name;
+        this.healing = healing;
+    }
+}
+
+Potion first = new Potion("Small Potion");
+Potion second = new Potion("Large Potion", 80);
+```
+
+`this.name` is het field van het huidige object. `name` zonder `this` is de parameter die aan de constructor is meegegeven. Beide constructors heten `Potion`, maar hebben andere **parameterlijsten**. Dit heet **constructor-overloading**. C# kiest de constructor die past bij de argumenten achter `new`.
+
+Een parameterloze constructor, zoals `public Potion() { }`, laat je een object zonder argumenten maken. Zodra je zelf constructors definieert, moet je een parameterloze constructor expliciet toevoegen als je `new Potion()` wilt blijven gebruiken.
+
+### 3. Methods en returntypes
+
+Een **method** voert een handeling uit of berekent iets. Het **returntype** bepaalt welke waarde terugkomt. `void` betekent dat een method niets teruggeeft.
+
+```csharp
+public int DoubleHealing(int amount)
+{
+    return amount * 2;
+}
+```
+
+Bij een method met returntype `int` moet je een geheel getal teruggeven. `return` levert die waarde aan de aanroepende code.
+
+### 4. Enums en `TimeSpan`
+
+Een **enum** geeft een vaste verzameling keuzes een naam. Zo voorkom je dat je overal losse tekstwaarden moet vergelijken:
+
+```csharp
+public enum PotionRarity
+{
+    Common,
+    Rare,
+    Legendary
+}
+```
+
+Een **`TimeSpan`** stelt een tijdsduur voor. `new TimeSpan(0, 0, 3)` betekent 0 uur, 0 minuten en 3 seconden. De property `TotalSeconds` geeft de volledige duur als `double` terug. Als een opdracht een `int` vraagt, moet je bewust bepalen hoe je die waarde omzet, bijvoorbeeld met `(int)duration.TotalSeconds`.
+
+### 5. Verschillende soorten properties
+
+- **Read/write:** heeft zowel `get` als `set` en kan gelezen en gewijzigd worden.
+- **Read-only:** heeft alleen `get`; andere code kan de waarde niet via die property instellen.
+- **Write-only:** heeft alleen `set`; andere code kan via die property wel een waarde instellen, maar niet uitlezen.
+- **Berekend:** de `get` stelt een resultaat samen uit andere gegevens, in plaats van een afzonderlijk field terug te geven.
+
+Schrijf de volledige `Weapon`-klasse zelf. De voorbeelden gebruiken bewust een andere klasse.
 
 ## Opdrachten
 
